@@ -1,0 +1,1262 @@
+<?xml version="1.0" ?>
+<pattern xmlns="http://www.knitml.com/schema/pattern">
+	<supplies>
+		<yarns>
+			<yarn id="Colour 2">
+				<color name="#0000FF"/>
+			</yarn>
+			<yarn id="Colour 1">
+				<color name="#FF0000"/>
+			</yarn>
+			<yarn id="Main Colour">
+				<color name="#FFFFFF"/>
+			</yarn>
+		</yarns>
+	</supplies>
+	<directions width="20" height="20">
+		<instruction-group id="cm">
+			<section>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<yo yarn-ref="Colour 1">
+						1
+					</yo>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<ck3dec yarn-ref="Colour 2">
+						1
+					</ck3dec>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+				<row>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+					<knit yarn-ref="Main Colour">
+						1
+					</knit>
+				</row>
+			</section>
+		</instruction-group>
+	</directions>
+</pattern>
