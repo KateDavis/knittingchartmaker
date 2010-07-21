@@ -24,7 +24,7 @@ class Yarn:
     def setGtkCol(self, gtkcol):
         logging.debug("set yarn \"%s\" gtkcol from %s to %s" % (self.label, self.gtkcol.to_string(), gtkcol.to_string()))
         self.gtkcol = gtkcol
-        self.col = "#%2s%2s%2s" % (hex(gtkcol.red/256)[2:], hex(gtkcol.green/256)[2:], hex(gtkcol.blue/256)[2:])
+        self.col = "#%2s%2s%2s" % (hex(gtkcol.red / 256)[2:], hex(gtkcol.green / 256)[2:], hex(gtkcol.blue / 256)[2:])
         self.col = self.col.replace(" ", "0")
         logging.debug("gtkcol %s parsed as %s" % (self.gtkcol.to_string(), self.col))
 
@@ -33,17 +33,17 @@ class Yarn:
     def setSelectionCol(self, gtkcol):
         r = gtkcol.red - self.seldelta
         if r <= 0:
-            r += self.seldelta*2
+            r += self.seldelta * 2
             
         g = gtkcol.green - self.seldelta
         if g <= 0:
-            g += self.seldelta*2
+            g += self.seldelta * 2
             
         b = gtkcol.blue - self.seldelta
         if b <= 0:
-            b += self.seldelta*2
+            b += self.seldelta * 2
         
-        col = gtk.gdk.Color(r,g,b)
+        col = gtk.gdk.Color(r, g, b)
     
         logging.debug("set yarn \"%s\" selection col using %s to %s " % (self.label, gtkcol.to_string(), col.to_string()))
         self.selectioncol = col

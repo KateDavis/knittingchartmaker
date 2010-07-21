@@ -134,7 +134,7 @@ class Chart:
         sd = libxml2.parseFile("misc/knitml2svg.xsl")
         s = libxslt.parseStylesheetDoc(sd)
         d = libxml2.parseFile(knitmlfile)
-        r = s.applyStylesheet(d, {"sqw":"'"+str(sqw)+"'", "sqh":"'"+str(sqh)+"'", "grid":"'"+str(int(grid))+"'", "numbers":"'%s'" % numbers})
+        r = s.applyStylesheet(d, {"sqw":"'" + str(sqw) + "'", "sqh":"'" + str(sqh) + "'", "grid":"'" + str(int(grid)) + "'", "numbers":"'%s'" % numbers})
         s.saveResultToFilename(filename, r, 0)
         s.freeStylesheet()
         d.freeDoc()
@@ -163,43 +163,43 @@ class Chart:
             self.setup()
     
             if pos == 0:
-                i=0
-                while i<h_old and i<self.h:
-                    j=0
-                    while j<w_old and j<self.w:
+                i = 0
+                while i < h_old and i < self.h:
+                    j = 0
+                    while j < w_old and j < self.w:
                         self.grid[i][j] = grid[i][j]
                         j += 1
                     i += 1
             elif pos == 1:
-                i=0
-                while i<h_old and i<self.h:
-                    j = w_old-1
-                    k = self.w-1
-                    while j>=0 and k>=0:
+                i = 0
+                while i < h_old and i < self.h:
+                    j = w_old - 1
+                    k = self.w - 1
+                    while j >= 0 and k >= 0:
                         self.grid[i][k] = grid[i][j]
                         j -= 1
                         k -= 1
                     i += 1
             elif pos == 2:
-                i = h_old-1
-                h = self.h-1
-                while i>=0 and h>=0:
-                    j = w_old-1
-                    k = self.w-1
-                    while j>=0 and k>=0:
+                i = h_old - 1
+                h = self.h - 1
+                while i >= 0 and h >= 0:
+                    j = w_old - 1
+                    k = self.w - 1
+                    while j >= 0 and k >= 0:
                         self.grid[h][k] = grid[i][j]
                         j -= 1
                         k -= 1
                     i -= 1
                     h -= 1
             elif pos == 3:
-                i = h_old-1
-                h = self.h-1
-                while i>=0 and h>=0:
-                    j=0
-                    while j<w_old and j<self.w:
+                i = h_old - 1
+                h = self.h - 1
+                while i >= 0 and h >= 0:
+                    j = 0
+                    while j < w_old and j < self.w:
                         self.grid[h][j] = grid[i][j]
-                        j +=1
+                        j += 1
                     i -= 1
                     h -= 1
 
@@ -209,8 +209,8 @@ class DrawableChart(Chart):
         self.stw = 20
         self.sth = 20
         
-        self.tw = w*(self.stw+1)+1
-        self.th = h*(self.sth+1)+1
+        self.tw = w * (self.stw + 1) + 1
+        self.th = h * (self.sth + 1) + 1
         
         self.da = gtk.DrawingArea()
         self.da.set_size_request(self.tw, self.th)
@@ -241,8 +241,9 @@ class DrawableChart(Chart):
         
     def button_press_event(self, widget, event):
         if event.button == 1:
-            x, y = int(event.x / (self.stw+1)), int(event.y / (self.sth+1))
-            self.setStitch(x,y, self.stitch)
+            x, y = int(event.x / (self.stw + 1)), int(event.y / (self.sth + 1))
+            self.setStitch(x, y, self.stitch)
+            self.setYarn(x, y, self.yarn)
             self.refresh()
         return True
         
@@ -253,19 +254,19 @@ class DrawableChart(Chart):
         # draw stitches
         for i in range(self.h):
             for j in range(self.w):
-                st = self.getStitch(j,i)
-                st.render_to_drawable(self.da.window, self.da.get_style().black_gc, j*(self.stw+1)+1, i*(self.sth+1)+1, self.stw, self.sth)
+                st = self.getStitch(j, i)
+                st.render_to_drawable(self.da.window, self.da.get_style().black_gc, j * (self.stw + 1) + 1, i * (self.sth + 1) + 1, self.stw, self.sth)
         
         # add vertical lines
-        for i in range(0, self.tw, self.stw+1):
+        for i in range(0, self.tw, self.stw + 1):
             self.da.window.draw_line(self.da.get_style().black_gc, i, 0, i, self.th)
         
         # add horizontal lines
-        for i in range(0, self.th, self.sth+1):
+        for i in range(0, self.th, self.sth + 1):
             self.da.window.draw_line(self.da.get_style().black_gc, 0, i, self.tw, i)
         
         # draw a border
-        self.da.window.draw_rectangle(self.da.get_style().black_gc, False, 0, 0, self.tw-1, self.th-1)
+        self.da.window.draw_rectangle(self.da.get_style().black_gc, False, 0, 0, self.tw - 1, self.th - 1)
         
         # redraw the whole thing
         self.da.queue_draw()
@@ -280,15 +281,15 @@ class DrawableChart(Chart):
         self.sth = h
         
         # adjust size
-        self.tw = self.w*(self.stw+1)+1
-        self.th = self.h*(self.sth+1)+1
+        self.tw = self.w * (self.stw + 1) + 1
+        self.th = self.h * (self.sth + 1) + 1
         
     def resize(self, w, h, pos):
         Chart.resize(self, w, h, pos)
         
         # adjust size
-        self.tw = self.w*(self.stw+1)+1
-        self.th = self.h*(self.sth+1)+1
+        self.tw = self.w * (self.stw + 1) + 1
+        self.th = self.h * (self.sth + 1) + 1
         
 if __name__ == "__main__":
     c = DrawableChart(2, 2)
