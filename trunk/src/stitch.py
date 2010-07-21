@@ -17,10 +17,19 @@ class Stitch:
                 gc = drawable.new_gc()
                 gc.set_rgb_fg_color(self.yarn.gtkcol)
                 self.yarn.gc = gc
+            elif gc.foreground.to_string() != self.yarn.gtkcol:
+                gc.set_rgb_fg_color(self.yarn.gtkcol)
+                
             drawable.draw_rectangle(gc, True, x, y, w, h)
     
     def __str__(self):
         return self.name
+    
+    def setYarn(self, yn):
+        self.yarn = yn
+        
+    def getYarn(self):
+        return self.yarn
         
 class knit(Stitch):
     def __init__(self, yarn):

@@ -46,10 +46,10 @@ class Chart:
         #logging.debug("set yarn at (%d,%d) from \"%s\" to \"%s\"" % (x,y, self.grid[y][x]['yarn'].label, yn.label))
         if not self.yarns.has_key(yn.label):
             self.yarns[yn.label] = yn
-        self.grid[y][x].yarn = yn
+        self.grid[y][x].setYarn(yn)
         
     def getYarn(self, x, y):
-        return self.grid[y][x].yarn
+        return self.grid[y][x].getYarn()
         
     def setStitch(self, x, y, st):
         #logging.debug("set stitch at (%d,%d) from \"%s\" to \"%s\"" % (x,y, self.grid[y][x]['stitch'], st))
