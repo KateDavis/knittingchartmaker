@@ -42,4 +42,4 @@ class Yarn:
         self.selectioncol = col
     
     def __str__(self):
-        return self.name
+        return self.label
