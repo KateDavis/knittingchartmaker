@@ -1,6 +1,7 @@
 
 import gtk
 import sys
+from xml.dom import minidom
 
 import chart
 import stitch
@@ -21,28 +22,27 @@ class ChartMakerGUI:
         self.builder.add_from_file(self.builderfile)
         
         self.builder.get_object('main_window').connect('destroy', self.closedown)
-        self.setTitle()
         
         signals = {
-            'on_new1_activate'               : self.newChartDialog,
-            'on_newchart_dialog_response'    : self.newChartResponse,
-            'on_open1_activate'              : self.openDialog,
-            'on_save1_activate'              : self.save,
-            'on_save_as1_activate'           : self.saveAsDialog,
-            'on_export1_activate'            : self.exportDialog,
-            'on_export_dialog_response'      : self.exportResponse,
-            'on_resize1_activate'            : self.resizeDialog,
-            'on_resize_dialog_response'      : self.resizeResponse,
-            'on_preferences1_activate'       : self.preferencesDialog,
-            'on_preferences_dialog_response' : self.preferencesResponse,
-            'on_about1_activate'             : self.about,
-            'on_yarn_combobox_changed'       : self.switchYarn,
-            'on_edit_yarn_button_clicked'    : self.editYarnDialog,
-            'on_yarn_dialog_response'        : self.editYarnResponse,
-            'on_stitch_combobox_changed'     : self.switchStitch,
-            'on_stitch_ratio_entry_changed'  : self.setStitchRatio,
-            'on_zoom_scale_value_changed'    : self.setZoom,
-            'on_quit1_activate'              : self.closedown
+            'on_new1_activate'                   : self.newChartDialog,
+            'on_newchart_dialog_response'        : self.newChartResponse,
+            'on_open1_activate'                  : self.openDialog,
+            'on_save1_activate'                  : self.save,
+            'on_save_as1_activate'               : self.saveAsDialog,
+            'on_export1_activate'                : self.exportDialog,
+            'on_export_dialog_response'          : self.exportResponse,
+            'on_resize1_activate'                : self.resizeDialog,
+            'on_resize_dialog_response'          : self.resizeResponse,
+            'on_preferences1_activate'           : self.preferencesDialog,
+            'on_preferences_dialog_response'     : self.preferencesResponse,
+            'on_about1_activate'                 : self.about,
+            'on_yarn_combobox_changed'           : self.switchYarn,
+            'on_edit_yarn_button_clicked'        : self.editYarnDialog,
+            'on_yarn_dialog_response'            : self.editYarnResponse,
+            'on_stitch_combobox_changed'         : self.switchStitch,
+            'on_stitch_ratio_entry_changed'      : self.setStitchRatio,
+            'on_zoom_scale_value_changed'        : self.setZoom,
+            'on_quit1_activate'                  : self.closedown
         }
         self.builder.connect_signals(signals)
         
@@ -53,6 +53,9 @@ class ChartMakerGUI:
         self.chart = chart.DrawableChart(20, 20, yarn.Yarn("Background Colour", "#FFFFFF"))
         self.builder.get_object('chart_area').add(self.chart.drawing_area())
         self.chart.refresh()
+        
+        # add handlers for chart
+        self.chart.connect("chart_changed", self.chartChanged)
         
         # setup preview (as single cell chart)
         self.stitch_preview = chart.DrawableChart(1, 1, self.chart.yarn, readOnly=True)
@@ -96,6 +99,12 @@ class ChartMakerGUI:
         self.img_bgcol = gtk.gdk.color_parse('#fff')
         self.img_numcol = gtk.gdk.color_parse('#000')
         
+        # add a dirty flag for any changes
+        self.dirty = False
+        
+        # set the title
+        self.setTitle()
+        
         # show the gui and start it all
         self.builder.get_object('main_window').show_all()
         gtk.main()
@@ -108,6 +117,8 @@ class ChartMakerGUI:
         title = self.title + ' v' + self.version
         if self.savefile is not None:
             title += ': ' + self.savefile.split('/')[-1]
+        if self.chart.dirty or self.dirty:
+            title += "*"
         w.set_title(title)
         
     def setStitchRatio(self, widget):
@@ -147,6 +158,8 @@ class ChartMakerGUI:
             model.insert(active, [y.label])
             widget.set_active(active)
             self.refreshStitchPreview()
+            self.dirty = True
+            self.setTitle()
         else:
             if self.chart.yarn.label != model[active][0]:
                 self.chart.addYarn(label=model[active][0], switch=True)
@@ -169,7 +182,6 @@ class ChartMakerGUI:
                 stitchlist.insert(0, [st])
             else:
                 stitchlist.append([st])
-        stitchlist.append(["New stitch..."])
         
         # set the new list
         stitchesbox.set_model(stitchlist)
@@ -209,6 +221,8 @@ class ChartMakerGUI:
             # refresh chart and preview with new colors
             self.chart.refresh() 
             self.refreshStitchPreview()
+            self.dirty = True
+            self.setTitle()
             
         if response in [gtk.RESPONSE_OK, gtk.RESPONSE_CANCEL]:
             widget.hide()
@@ -240,13 +254,20 @@ class ChartMakerGUI:
             w = int(self.builder.get_object('newchart_width_entry').get_value())
             h = int(self.builder.get_object('newchart_height_entry').get_value())
             
-            self.chart = chart.DrawableChart(w, h, None)
-            self.builder.get_object('chart_area').add(self.chart.drawing_area())
-            self.yarn = self.chart.yarn
+            # create a new chart and add it to screen (removing old one)
+            screen = self.builder.get_object('chart_area')
+            screen.remove(self.chart.drawing_area())
+            self.chart = chart.DrawableChart(w, h)
+            screen.add(self.chart.drawing_area())
+            screen.show_all()
+            
+            # reset options then redraw all
             self.savefile = None
             self.refreshStitchPreview()
-            
             self.drawChart()
+            self.dirty = False
+            self.chart.dirty = False
+            self.setTitle()
         
         if widget is not None:
             widget.hide()
@@ -306,6 +327,8 @@ class ChartMakerGUI:
         self.setYarnList()
         self.setStitchList()
         self.drawChart()
+        self.dirty = False
+        self.chart.dirty = False
         self.setTitle()
         
         self.stopBusy()
@@ -344,6 +367,9 @@ class ChartMakerGUI:
             fp = open(self.savefile, "w")
             self.chart.toKnitML().writexml(fp, "", "\t", "\n")
             fp.close()
+            self.dirty = False
+            self.chart.dirty = False
+            self.setTitle()
             
         self.stopBusy()
         
@@ -403,6 +429,10 @@ class ChartMakerGUI:
         
         d.connect('response', lambda w, r: w.destroy())
         d.run()
+    
+    # any time chart is clicked, data may have been dirtied, set title
+    def chartChanged(self, chart):
+        self.setTitle()
         
         
 if __name__ == "__main__":
