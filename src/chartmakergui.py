@@ -64,6 +64,9 @@ class ChartMakerGUI:
         zoom_adjustment.lower = 10
         zoom_adjustment.upper = 40
         
+        # set ratio
+        self.builder.get_object('stitch_ratio_entry').set_value(self.chart.h / self.chart.w)
+        
         # setup dialogs
         self.builder.get_object('newchart_dialog').set_deletable(False)
         self.builder.get_object('yarn_dialog').set_deletable(False)
@@ -107,11 +110,9 @@ class ChartMakerGUI:
             title += ': ' + self.savefile.split('/')[-1]
         w.set_title(title)
         
-    def setStitchRatio(self, widget):#self.chartgui.sqratio = widget.get_value()
-        #self.chartgui.sqh = int(self.chartgui.sqw * self.chartgui.sqratio)
-        #self.chartgui.refresh()
+    def setStitchRatio(self, widget):
+        self.chart.setStitchSize(self.chart.w, int(self.chart.w * float(widget.get_value())))
         self.chart.refresh()
-        
         
     def setZoom(self, widget):
         self.chart.setStitchSize(int(widget.get_value()))
