@@ -24,25 +24,25 @@ class ChartMakerGUI:
         self.setTitle()
         
         signals = {
-            'on_new1_activate'                : self.newChartDialog,
+            'on_new1_activate'               : self.newChartDialog,
             'on_newchart_dialog_response'    : self.newChartResponse,
-            'on_open1_activate'                : self.openDialog,
-            'on_save1_activate'                : self.save,
-            'on_save_as1_activate'            : self.saveAsDialog,
+            'on_open1_activate'              : self.openDialog,
+            'on_save1_activate'              : self.save,
+            'on_save_as1_activate'           : self.saveAsDialog,
             'on_export1_activate'            : self.exportDialog,
-            'on_export_dialog_response'        : self.exportResponse,
+            'on_export_dialog_response'      : self.exportResponse,
             'on_resize1_activate'            : self.resizeDialog,
-            'on_resize_dialog_response'        : self.resizeResponse,
-            'on_preferences1_activate'        : self.preferencesDialog,
-            'on_preferences_dialog_response': self.preferencesResponse,
-            'on_about1_activate'            : self.about,
-            'on_yarn_combobox_changed'        : self.switchYarn,
+            'on_resize_dialog_response'      : self.resizeResponse,
+            'on_preferences1_activate'       : self.preferencesDialog,
+            'on_preferences_dialog_response' : self.preferencesResponse,
+            'on_about1_activate'             : self.about,
+            'on_yarn_combobox_changed'       : self.switchYarn,
             'on_edit_yarn_button_clicked'    : self.editYarnDialog,
             'on_yarn_dialog_response'        : self.editYarnResponse,
-            'on_stitch_combobox_changed'    : self.switchStitch,
-            'on_stitch_ratio_entry_changed'    : self.setStitchRatio,
+            'on_stitch_combobox_changed'     : self.switchStitch,
+            'on_stitch_ratio_entry_changed'  : self.setStitchRatio,
             'on_zoom_scale_value_changed'    : self.setZoom,
-            'on_quit1_activate'                : self.closedown
+            'on_quit1_activate'              : self.closedown
         }
         self.builder.connect_signals(signals)
         
@@ -58,6 +58,11 @@ class ChartMakerGUI:
         self.stitch_preview = chart.DrawableChart(1, 1, self.chart.yarn, readOnly=True)
         self.builder.get_object('preview_box').add(self.stitch_preview.drawing_area())
         self.stitch_preview.refresh()
+        
+        # set zoom scale (can be on option at some point)
+        zoom_adjustment = self.builder.get_object('zoom_scale').get_adjustment()
+        zoom_adjustment.lower = 10
+        zoom_adjustment.upper = 40
         
         # setup dialogs
         self.builder.get_object('newchart_dialog').set_deletable(False)
@@ -108,9 +113,7 @@ class ChartMakerGUI:
         self.chart.refresh()
         
         
-    def setZoom(self, widget):#self.chart.sqw = int(widget.get_value())
-        #self.chartgui.sqh = int(self.chartgui.sqw * self.chartgui.sqratio)
-        #self.chartgui.refresh()
+    def setZoom(self, widget):
         self.chart.setStitchSize(int(widget.get_value()))
         self.chart.refresh()
         
