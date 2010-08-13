@@ -23,7 +23,7 @@ class Stitch:
             drawable.draw_rectangle(gc, True, x, y, w, h)
     
     def __str__(self):
-        return "%s (%s)" % (self.name, self.yarn))
+        return "%s (%s)" % (self.name, self.yarn)
     
     def setYarn(self, yn):
         self.yarn = yn
