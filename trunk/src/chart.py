@@ -1,5 +1,5 @@
 
-import logging
+import sys
 from xml.dom import minidom
 
 # python-libxslt1 pkg
@@ -13,14 +13,13 @@ import yarn
 
 class Chart:
     def __init__(self, w=10, h=10, y=None):
-        #logging.debug("new chart %dx%d with yarn \"%s\"" %  (w, h, y.label))
         self.w = w
         self.h = h
         
         self.yarn = y
         if y is None:
             self.yarn = yarn.Yarn("Background Colour")
-        self.yarns = {self.yarn.label:self.yarn}
+        self.yarns = { self.yarn.label: self.yarn }
         self.defaultYarn = self.yarn
         
         self.stitch = stitch.knit(self.yarn)
@@ -28,7 +27,6 @@ class Chart:
         self.setup()
     
     def setup(self):
-        logging.debug("setup chart")
         self.grid = []
         for i in range(self.h):
             row = []
@@ -37,29 +35,42 @@ class Chart:
             self.grid.append(row)
     
     def clear(self):
-        logging.debug("clear chart")
         for i in range(self.h):
             for j in range(self.w):
                 self.grid[i][j] = stitch.knit(self.yarn)
     
     def setYarn(self, x, y, yn):
-        #logging.debug("set yarn at (%d,%d) from \"%s\" to \"%s\"" % (x,y, self.grid[y][x]['yarn'].label, yn.label))
-        if not self.yarns.has_key(yn.label):
-            self.yarns[yn.label] = yn
+        yn = self.addYarn(yn)
         self.grid[y][x].setYarn(yn)
         
     def getYarn(self, x, y):
         return self.grid[y][x].getYarn()
         
     def setStitch(self, x, y, st):
-        #logging.debug("set stitch at (%d,%d) from \"%s\" to \"%s\"" % (x,y, self.grid[y][x]['stitch'], st))
-        self.grid[y][x] = st
+        self.grid[y][x] = st.copy()
         
     def getStitch(self, x, y):
         return self.grid[y][x]
         
+    def addYarn(self, yarn=None, label=None, switch=False):
+        # add any new yarn
+        if yarn is not None and not self.yarns.has_key(yarn.label):
+            self.yarns[yarn.label] = yarn
+        
+        # set current yarn
+        if switch:
+            if label is not None and self.yarns.has_key(label):
+                self.yarn = self.yarns[label]
+            if yarn is not None and self.yarns.has_key(yarn.label):
+                self.yarn = self.yarns[yarn.label]
+            
+        # return yarn
+        if yarn is not None:
+            return self.yarns[yarn.label]
+        if label is not None:
+            return self.yarns[label]
+        
     def toKnitML(self):
-        logging.debug("chart to knitml")
         knitml = minidom.Document()
         
         pattern = knitml.createElement("pattern")
@@ -103,7 +114,6 @@ class Chart:
         return knitml
     
     def fromKnitML(self, filename):
-        logging.debug("chart from knitml \"%s\"" % filename)
         knitml = minidom.parse(filename)
         
         # grab all yarns
@@ -130,7 +140,6 @@ class Chart:
                     x += 1
         
     def toSVG(self, filename, knitmlfile, numbers="", sqw=40, sqh=40, grid=True):
-        #logging.debug("chart to svg \"%s\" (sqsize=%d, grid=%d, numbers=%s)" % (filename, sqsize, grid, numbers))
         sd = libxml2.parseFile("misc/knitml2svg.xsl")
         s = libxslt.parseStylesheetDoc(sd)
         d = libxml2.parseFile(knitmlfile)
@@ -146,7 +155,6 @@ class Chart:
     #     2 bottom-right
     #     3 bottom-right
     def resize(self, w, h, pos):
-        logging.debug("resize chart from %dx%d to %dx%d from %s" % (self.w, self.h, w, h, ["TL", "TR", "BR", "BL"][pos]))
         if 0 <= pos and pos <= 3 and (w != self.w or h != self.h):
             # copy old grid
             w_old = self.w
@@ -202,6 +210,14 @@ class Chart:
                         j += 1
                     i -= 1
                     h -= 1
+    
+    def __str__(self):
+        s = ""
+        for r in self.grid:
+            for st in r:
+                s += "%s\t" % st
+            s += "\n"
+        return s
 
 class DrawableChart(Chart):
     def __init__(self, w=10, h=10, y=None, readOnly=False):
@@ -216,26 +232,23 @@ class DrawableChart(Chart):
         self.da.set_size_request(self.tw, self.th)
         
         self.read_only = readOnly
-
+        
         # Signals used to handle backing pixmap
         self.pixmap = None
         self.da.connect("expose_event", self.expose_event)
         self.da.connect("configure_event", self.configure_event)
         if not self.read_only:
             self.da.connect("button_press_event", self.button_press_event)
-
+        
         self.da.set_events(gtk.gdk.EXPOSURE_MASK | gtk.gdk.BUTTON_PRESS_MASK)
     
     # configure the drawing area, i.e. set up a backing pixmap
     def configure_event(self, widget, event):
-        #x, y, width, height = widget.get_allocation()
         self.refresh()
         return True
-
+    
     # redraw the screen from the backing pixmap
     def expose_event(self, widget, event):
-        #x , y, width, height = event.area
-        #widget.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL], self.pixmap, x, y, x, y, width, height)
         self.refresh()
         return False
         
@@ -245,6 +258,7 @@ class DrawableChart(Chart):
             self.setStitch(x, y, self.stitch)
             self.setYarn(x, y, self.yarn)
             self.refresh()
+            
         return True
         
     def refresh(self):
@@ -255,6 +269,7 @@ class DrawableChart(Chart):
         for i in range(self.h):
             for j in range(self.w):
                 st = self.getStitch(j, i)
+                #logging.debug("yarn (%d) on stitch (%d)" % (id(st.yarn), id(st)))
                 st.render_to_drawable(self.da.window, self.da.get_style().black_gc, j * (self.stw + 1) + 1, i * (self.sth + 1) + 1, self.stw, self.sth)
         
         # add vertical lines
@@ -270,7 +285,7 @@ class DrawableChart(Chart):
         
         # redraw the whole thing
         self.da.queue_draw()
-    
+        
     def drawing_area(self):
         return self.da
     

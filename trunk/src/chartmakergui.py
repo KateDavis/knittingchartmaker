@@ -1,6 +1,5 @@
 
 import gtk
-import logging
 import sys
 
 import chart
@@ -14,8 +13,6 @@ class ChartMakerGUI:
         self.website = "http://code.google.com/p/knittingchartmaker/"
         self.authors = ["Iain Kelly", "Joeli Kelly"]
         self.description = "A program for designing knitting charts."
-        
-        logging.debug("ChartMaker started")
         
         self.savefile = filename
         
@@ -96,29 +93,22 @@ class ChartMakerGUI:
         gtk.main()
     
     def closedown(self, widget):
-        logging.debug("ChartMaker stopped")
-        logging.shutdown()
         gtk.main_quit()
         
     def setTitle(self):
-        #w = self.builder.get_object('main_window')
         w = self.builder.get_object('main_window')
         title = self.title + ' v' + self.version
         if self.savefile is not None:
             title += ': ' + self.savefile.split('/')[-1]
         w.set_title(title)
         
-    def setStitchRatio(self, widget):
-        #logging.debug("changed stitch ratio from %f to %f" % (self.chartgui.sqratio, int(widget.get_value())))
-        #self.chartgui.sqratio = widget.get_value()
+    def setStitchRatio(self, widget):#self.chartgui.sqratio = widget.get_value()
         #self.chartgui.sqh = int(self.chartgui.sqw * self.chartgui.sqratio)
         #self.chartgui.refresh()
         self.chart.refresh()
         
         
-    def setZoom(self, widget):
-        #logging.debug("zoomed from %d to %d" % (self.chartgui.sqw, int(widget.get_value())))
-        #self.chart.sqw = int(widget.get_value())
+    def setZoom(self, widget):#self.chart.sqw = int(widget.get_value())
         #self.chartgui.sqh = int(self.chartgui.sqw * self.chartgui.sqratio)
         #self.chartgui.refresh()
         self.chart.setStitchSize(int(widget.get_value()))
@@ -150,19 +140,16 @@ class ChartMakerGUI:
         active = widget.get_active()
         model = widget.get_model()
         if active == len(model) - 1:
-            logging.debug("switched from yarn \"%s\" to a new yarn" % self.chart.yarn.label)
             y = yarn.Yarn("Colour %d" % active, "#FF0000")
-            self.chart.yarns[y.label] = y
+            self.chart.addYarn(yarn=y, switch=True)
             model.insert(active, [y.label])
             widget.set_active(active)
         else:
-            logging.debug("switched from \"%s\" to \"%s\"" % (self.chart.yarn.label, model[active][0]))
-            self.chart.yarn = self.chart.yarns[model[active][0]]
-            self.refreshStitchPreview()
+            if self.chart.yarn.label != model[active][0]:
+                self.chart.addYarn(label=model[active][0], switch=True)
+                self.refreshStitchPreview()
         
     def setStitchList(self):
-        logging.debug("reset stitch list")
-        
         # get combo box and clear it
         stitchesbox = self.builder.get_object('stitch_combobox')
         stitchesbox.set_model(None)
@@ -188,20 +175,18 @@ class ChartMakerGUI:
     def switchStitch(self, widget):
         active = widget.get_active()
         model = widget.get_model()
-        logging.debug("switched from stitch \"%s\" to \"%s\"" % (self.chart.stitch.name, model[active][0]))
         self.chart.stitch = stitch.createStitch(model[active][0], self.chart.yarn)
         self.refreshStitchPreview()
         
     def refreshStitchPreview(self):
-        logging.debug("refreshing current stitch preview")
-        self.stitch_preview.stitch = self.chart.stitch
-        self.stitch_preview.yarn = self.chart.yarn
-        self.stitch_preview.setYarn(0, 0, self.chart.yarn)
-        self.stitch_preview.setStitch(0, 0, self.chart.stitch)
-        self.stitch_preview.refresh()
+        #self.stitch_preview.stitch = self.chart.stitch
+        #self.stitch_preview.yarn = self.chart.yarn
+        #self.stitch_preview.setYarn(0, 0, self.chart.yarn)
+        #self.stitch_preview.setStitch(0, 0, self.chart.stitch)
+        #self.stitch_preview.refresh()
+        pass
         
     def editYarnDialog(self, widget=None):
-        logging.debug("editing yarn \"%s\"" % self.chart.yarn.label)
         self.builder.get_object('yarn_label').set_text(self.chart.yarn.label)
         self.builder.get_object('yarn_col').set_current_color(self.chart.yarn.gtkcol)
         self.builder.get_object('yarn_dialog').show_all()
@@ -243,7 +228,6 @@ class ChartMakerGUI:
         self.stopBusy()
         
     def newChartDialog(self, widget):
-        logging.debug("new chart...")
         self.builder.get_object('newchart_width_entry').set_value(20)
         self.builder.get_object('newchart_height_entry').set_value(20)
         self.builder.get_object('newchart_dialog').show_all()
@@ -253,7 +237,6 @@ class ChartMakerGUI:
         if response == gtk.RESPONSE_OK:
             w = int(self.builder.get_object('newchart_width_entry').get_value())
             h = int(self.builder.get_object('newchart_height_entry').get_value())
-            logging.debug("new chart with size %dx%d" % (w, h))
             
             self.chart = chart.DrawableChart(w, h, None)
             self.builder.get_object('chart_area').add(self.chart.drawing_area())
@@ -266,17 +249,14 @@ class ChartMakerGUI:
         if widget is not None:
             widget.hide()
         
-        self.stopBusy()    
+        self.stopBusy()
     
     def drawChart(self):
         self.startBusy()
-        logging.debug("drawing chart")
-        
         self.chart.refresh()
         self.stopBusy()
         
     def resizeDialog(self, widget):
-        logging.debug("resizing chart...")
         self.builder.get_object('resize_width_entry').set_value(self.chart.w)
         self.builder.get_object('resize_height_entry').set_value(self.chart.h)
         self.builder.get_object('resize_from_combo').set_active(0)
@@ -288,7 +268,6 @@ class ChartMakerGUI:
             w = int(self.builder.get_object('resize_width_entry').get_value())
             h = int(self.builder.get_object('resize_height_entry').get_value())
             f = int(self.builder.get_object('resize_from_combo').get_active())
-            logging.debug("resizing chart from %dx%d to %dx%d from %s" % (self.chart.w, self.chart.h, w, h, ["TL", "TR", "BR", "BL"][f]))
             self.chart.resize(w, h, f)
             self.drawChart()
         
@@ -299,7 +278,6 @@ class ChartMakerGUI:
     
             
     def openDialog(self, widget):
-        logging.debug("opening...")
         f = gtk.FileChooserDialog('Open...', self.builder.get_object('main_window'), gtk.FILE_CHOOSER_ACTION_OPEN, \
                                 (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
         filt = gtk.FileFilter()
@@ -318,7 +296,6 @@ class ChartMakerGUI:
         widget.destroy()
     
     def openFile(self, filename):
-        logging.debug("opening file \"%s\"" % filename)
         self.startBusy()
         self.savefile = filename
         
@@ -332,14 +309,12 @@ class ChartMakerGUI:
         self.stopBusy()
     
     def save(self, widget):
-        logging.debug("saving...")
         if self.savefile is None:
             self.saveAsDialog(None)
         else:
             self.saveFile()
             
     def saveAsDialog(self, widget):
-        logging.debug("save as...")
         f = gtk.FileChooserDialog('Save as...', self.builder.get_object('main_window'), gtk.FILE_CHOOSER_ACTION_SAVE, \
                                 (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
         
@@ -361,7 +336,6 @@ class ChartMakerGUI:
         self.saveFile()
         
     def saveFile(self):
-        logging.debug("saving file \"%s\"" % self.savefile)
         self.startBusy()
         
         if self.savefile is not None:
@@ -388,7 +362,7 @@ class ChartMakerGUI:
             if exportname.find(".svg") == -1:
                 exportname += ".svg"
             
-            numbers = ""            
+            numbers = ""
             if self.builder.get_object('column_numbers_check').get_active():
                 numbers += "b"
                 
@@ -430,10 +404,6 @@ class ChartMakerGUI:
         
         
 if __name__ == "__main__":
-    # setup log
-    logfile = "ChartMaker.log"
-    logging.basicConfig(filename=logfile, level=logging.DEBUG, format="(%(module)-15s %(funcName)-25s %(lineno)-4d) %(asctime)s: %(levelname)s - %(message)s")
-        
     if len(sys.argv) == 2:
         cm = ChartMakerGUI(filename=sys.argv[1])
     else:

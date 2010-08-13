@@ -1,6 +1,4 @@
 
-import inspect
-
 import stitch
 
 class Stitch:
@@ -15,21 +13,27 @@ class Stitch:
             gc = self.yarn.gc
             if gc is None:
                 gc = drawable.new_gc()
-                gc.set_rgb_fg_color(self.yarn.gtkcol)
                 self.yarn.gc = gc
-            elif gc.foreground.to_string() != self.yarn.gtkcol:
                 gc.set_rgb_fg_color(self.yarn.gtkcol)
+                self.yarn.gc_col = gc.foreground.to_string()
+            elif gc.foreground.to_string() != self.yarn.gc_col:
+                gc.set_rgb_fg_color(self.yarn.gtkcol)
+                self.yarn.gc_col = gc.foreground.to_string()
                 
             drawable.draw_rectangle(gc, True, x, y, w, h)
     
     def __str__(self):
-        return self.name
+        return "%s (%s)" % (self.name, self.yarn))
     
     def setYarn(self, yn):
         self.yarn = yn
         
     def getYarn(self):
         return self.yarn
+    
+    def copy(self):
+        stitch_type = self.__class__
+        return stitch_type(self.yarn)
         
 class knit(Stitch):
     def __init__(self, yarn):
