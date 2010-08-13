@@ -269,7 +269,6 @@ class DrawableChart(Chart):
         for i in range(self.h):
             for j in range(self.w):
                 st = self.getStitch(j, i)
-                #logging.debug("yarn (%d) on stitch (%d)" % (id(st.yarn), id(st)))
                 st.render_to_drawable(self.da.window, self.da.get_style().black_gc, j * (self.stw + 1) + 1, i * (self.sth + 1) + 1, self.stw, self.sth)
         
         # add vertical lines

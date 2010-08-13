@@ -1,4 +1,6 @@
 
+import inspect
+
 import stitch
 
 class Stitch:
