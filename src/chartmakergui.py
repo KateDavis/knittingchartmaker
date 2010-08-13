@@ -115,8 +115,6 @@ class ChartMakerGUI:
         self.chart.refresh()
         
     def setYarnList(self):
-        logging.debug("reset yarn list")
-        
         # get combo box and clear it
         yarnsbox = self.builder.get_object('yarn_combobox')
         yarnsbox.set_model(None)
@@ -203,8 +201,6 @@ class ChartMakerGUI:
                     r[0] = lbl
                     self.chart.yarn.label = lbl
                     break
-                    
-            logging.debug("set label to \"%s\" and colour to %s" % (self.chart.yarn.label, self.chart.yarn.col))
             
             self.chart.refresh() # refresh chart with new colors
             
