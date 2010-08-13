@@ -9,6 +9,7 @@ class Stitch:
         self.yarn = yarn
         self.cols = cols
         self.rows = rows
+        self.selected = False
         
     def render_to_drawable(self, drawable, stgc, x, y, w, h):
         if self.yarn is not None:
@@ -16,10 +17,16 @@ class Stitch:
             if gc is None:
                 gc = drawable.new_gc()
                 self.yarn.gc = gc
-                gc.set_rgb_fg_color(self.yarn.gtkcol)
+                if self.selected:
+                    gc.set_rgb_fg_color(self.yarn.selectioncol)
+                else:
+                    gc.set_rgb_fg_color(self.yarn.gtkcol)
                 self.yarn.gc_col = gc.foreground.to_string()
             elif gc.foreground.to_string() != self.yarn.gc_col:
-                gc.set_rgb_fg_color(self.yarn.gtkcol)
+                if self.selected:
+                    gc.set_rgb_fg_color(self.yarn.selectioncol)
+                else:
+                    gc.set_rgb_fg_color(self.yarn.gtkcol)
                 self.yarn.gc_col = gc.foreground.to_string()
                 
             drawable.draw_rectangle(gc, True, x, y, w, h)

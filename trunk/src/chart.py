@@ -242,6 +242,9 @@ class DrawableChart(Chart):
             self.da.connect("button_press_event", self.button_press_event)
         
         self.da.set_events(gtk.gdk.EXPOSURE_MASK | gtk.gdk.BUTTON_PRESS_MASK)
+        
+        # select vars to allow selection of multiple cells
+        self.selectionRange = [self.w + 1, self.h + 1, -1, -1]
     
     # configure the drawing area, i.e. set up a backing pixmap
     def configure_event(self, widget, event):
@@ -254,16 +257,57 @@ class DrawableChart(Chart):
         return False
         
     def button_press_event(self, widget, event):
-        if event.button in [1, 3]:
-            x, y = int(event.x / (self.stw + 1)), int(event.y / (self.sth + 1))
-            if event.button == 1:
-                self.setStitch(x, y, self.stitch)
-                self.setYarn(x, y, self.yarn)
-            elif event.button == 3:
-                self.setStitch(x, y, self.defaultStitch)
-                self.setYarn(x, y, self.defaultYarn)
-            self.refresh()
+        # get cell position
+        x, y = int(event.x / (self.stw + 1)), int(event.y / (self.sth + 1))
+        
+        # CTRL+click: individual addition/subtraction to selection
+        if event.state & gtk.gdk.CONTROL_MASK and not(event.state & gtk.gdk.SHIFT_MASK):
+            stitch = self.getStitch(x, y)
+            stitch.selected = not stitch.selected
+        
+        # SHIFT+click: multiple addition/subtraction to selection
+        elif event.state & gtk.gdk.SHIFT_MASK and not(event.state & gtk.gdk.CONTROL_MASK):
+            # extend selection range
+            if x < self.selectionRange[0]:    self.selectionRange[0] = x
+            if y < self.selectionRange[1]:    self.selectionRange[1] = y
+            if x > self.selectionRange[2]:    self.selectionRange[2] = x
+            if y > self.selectionRange[3]:    self.selectionRange[3] = y
             
+            # make sure everything in range is selected
+            for i in range(self.selectionRange[0], self.selectionRange[2] + 1):
+                for j in range(self.selectionRange[1], self.selectionRange[3] + 1):
+                    self.getStitch(i, j).selected = True
+        
+        # set stitches and yarns on selection
+        else:
+            stitch = self.getStitch(x, y)
+            
+            # if stitch in selection, set all
+            if stitch.selected:
+                for stitch_info in self.selectedStitches():
+                    if event.button == 1:
+                        self.setStitch(stitch_info["x"], stitch_info["y"], self.stitch)
+                        self.setYarn(stitch_info["x"], stitch_info["y"], self.yarn)
+                    elif event.button == 3:
+                        self.setStitch(stitch_info["x"], stitch_info["y"], self.defaultStitch)
+                        self.setYarn(stitch_info["x"], stitch_info["y"], self.defaultYarn)
+            
+            # otherwise, set chosen cell
+            else:
+                if event.button == 1:
+                    self.setStitch(x, y, self.stitch)
+                    self.setYarn(x, y, self.yarn)
+                elif event.button == 3:
+                    self.setStitch(x, y, self.defaultStitch)
+                    self.setYarn(x, y, self.defaultYarn)
+                
+                # clear selection
+                self.deselectAll()
+                self.selectionRange = [self.w + 1, self.h + 1, -1, -1]
+        
+        # redraw the char
+        self.refresh()
+        
         return True
         
     def refresh(self):
@@ -309,9 +353,27 @@ class DrawableChart(Chart):
         # adjust size
         self.tw = self.w * (self.stw + 1) + 1
         self.th = self.h * (self.sth + 1) + 1
+    
+    def selectAll(self):
+        for r in self.grid:
+            for st in r:
+                st.selected = True
+    
+    def deselectAll(self):
+        for r in self.grid:
+            for st in r:
+                st.selected = False
+                
+    def selectedStitches(self):
+        stitches = []
+        for x, r in enumerate(self.grid):
+            for y, st in enumerate(r):
+                if st.selected:
+                    stitches.append({"stitch": st, "x": y, "y": x})
+        return stitches
         
 if __name__ == "__main__":
-    c = DrawableChart(2, 2)
+    c = DrawableChart(5, 5)
     
     w = gtk.Window()
     w.set_name("Chart")
@@ -323,6 +385,7 @@ if __name__ == "__main__":
     
     w.show_all()
     
+    c.addYarn(yarn.Yarn("Yarn 1", "#FF00FF"), switch=True)
     c.refresh()
     
     gtk.main()
