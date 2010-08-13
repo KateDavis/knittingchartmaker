@@ -23,6 +23,7 @@ class Chart:
         self.defaultYarn = self.yarn
         
         self.stitch = stitch.knit(self.yarn)
+        self.defaultStitch = self.stitch
         
         self.setup()
     
@@ -253,10 +254,14 @@ class DrawableChart(Chart):
         return False
         
     def button_press_event(self, widget, event):
-        if event.button == 1:
+        if event.button in [1, 3]:
             x, y = int(event.x / (self.stw + 1)), int(event.y / (self.sth + 1))
-            self.setStitch(x, y, self.stitch)
-            self.setYarn(x, y, self.yarn)
+            if event.button == 1:
+                self.setStitch(x, y, self.stitch)
+                self.setYarn(x, y, self.yarn)
+            elif event.button == 3:
+                self.setStitch(x, y, self.defaultStitch)
+                self.setYarn(x, y, self.defaultYarn)
             self.refresh()
             
         return True
