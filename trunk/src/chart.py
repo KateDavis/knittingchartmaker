@@ -4,6 +4,7 @@ from xml.dom import minidom
 
 # python-libxslt1 pkg
 import gtk
+import gobject
 import libxml2
 import libxslt
 
@@ -92,8 +93,8 @@ class Chart:
             yarns.appendChild(yarn)
         
         directions = knitml.createElement("directions")
-        directions.setAttribute("width", self.w)
-        directions.setAttribute("height", self.h)
+        directions.setAttribute("width", str(self.w))
+        directions.setAttribute("height", str(self.h))
         pattern.appendChild(directions)
         
         group = knitml.createElement("instruction-group")
@@ -220,14 +221,15 @@ class Chart:
             s += "\n"
         return s
 
-class DrawableChart(Chart):
+class DrawableChart(Chart, gobject.GObject):
     def __init__(self, w=10, h=10, y=None, readOnly=False):
+        gobject.GObject.__init__(self)
         Chart.__init__(self, w, h, y)
         self.stw = 20
         self.sth = 20
         
-        self.tw = w * (self.stw + 1) + 1
-        self.th = h * (self.sth + 1) + 1
+        self.tw = w * (self.stw + 1)
+        self.th = h * (self.sth + 1)
         
         self.da = gtk.DrawingArea()
         self.da.set_size_request(self.tw, self.th)
@@ -240,11 +242,14 @@ class DrawableChart(Chart):
         self.da.connect("configure_event", self.configure_event)
         if not self.read_only:
             self.da.connect("button_press_event", self.button_press_event)
-        
         self.da.set_events(gtk.gdk.EXPOSURE_MASK | gtk.gdk.BUTTON_PRESS_MASK)
+        
+        # dirty flag to keep track of changes
+        self.dirty = False
         
         # select vars to allow selection of multiple cells
         self.selectionRange = [self.w + 1, self.h + 1, -1, -1]
+
     
     # configure the drawing area, i.e. set up a backing pixmap
     def configure_event(self, widget, event):
@@ -259,6 +264,9 @@ class DrawableChart(Chart):
     def button_press_event(self, widget, event):
         # get cell position
         x, y = int(event.x / (self.stw + 1)), int(event.y / (self.sth + 1))
+        
+        if x < 0 or self.w < x or y < 0 or self.h < y:
+            return
         
         # CTRL+click: individual addition/subtraction to selection
         if event.state & gtk.gdk.CONTROL_MASK and not(event.state & gtk.gdk.SHIFT_MASK):
@@ -329,7 +337,7 @@ class DrawableChart(Chart):
             self.da.window.draw_line(self.da.get_style().black_gc, 0, i, self.tw, i)
         
         # draw a border
-        self.da.window.draw_rectangle(self.da.get_style().black_gc, False, 0, 0, self.tw - 1, self.th - 1)
+        self.da.window.draw_rectangle(self.da.get_style().black_gc, False, 0, 0, self.tw, self.th)
         
         # redraw the whole thing
         self.da.queue_draw()
@@ -344,15 +352,15 @@ class DrawableChart(Chart):
         self.sth = h
         
         # adjust size
-        self.tw = self.w * (self.stw + 1) + 1
-        self.th = self.h * (self.sth + 1) + 1
+        self.tw = self.w * (self.stw + 1)
+        self.th = self.h * (self.sth + 1)
         
     def resize(self, w, h, pos):
         Chart.resize(self, w, h, pos)
         
         # adjust size
-        self.tw = self.w * (self.stw + 1) + 1
-        self.th = self.h * (self.sth + 1) + 1
+        self.tw = self.w * (self.stw + 1)
+        self.th = self.h * (self.sth + 1)
     
     def selectAll(self):
         for r in self.grid:
@@ -371,9 +379,24 @@ class DrawableChart(Chart):
                 if st.selected:
                     stitches.append({"stitch": st, "x": y, "y": x})
         return stitches
+    
+    def setYarn(self, x, y, yn):
+        Chart.setYarn(self, x, y, yn)
+        self.dirty = True
+        self.emit("chart_changed")
         
+    def setStitch(self, x, y, st):
+        Chart.setStitch(self, x, y, st)
+        self.dirty = True
+        self.emit("chart_changed")
+        
+# setup some new signals for tracking chart changes
+gobject.type_register(DrawableChart)
+gobject.signal_new("chart_changed", DrawableChart, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+
+
 if __name__ == "__main__":
-    c = DrawableChart(5, 5)
+    c = DrawableChart(10, 10)
     
     w = gtk.Window()
     w.set_name("Chart")
