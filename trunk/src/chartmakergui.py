@@ -146,6 +146,7 @@ class ChartMakerGUI:
             self.chart.addYarn(yarn=y, switch=True)
             model.insert(active, [y.label])
             widget.set_active(active)
+            self.refreshStitchPreview()
         else:
             if self.chart.yarn.label != model[active][0]:
                 self.chart.addYarn(label=model[active][0], switch=True)
@@ -181,12 +182,11 @@ class ChartMakerGUI:
         self.refreshStitchPreview()
         
     def refreshStitchPreview(self):
-        #self.stitch_preview.stitch = self.chart.stitch
-        #self.stitch_preview.yarn = self.chart.yarn
-        #self.stitch_preview.setYarn(0, 0, self.chart.yarn)
-        #self.stitch_preview.setStitch(0, 0, self.chart.stitch)
-        #self.stitch_preview.refresh()
-        pass
+        self.stitch_preview.stitch = self.chart.stitch
+        self.stitch_preview.yarn = self.chart.yarn
+        self.stitch_preview.setStitch(0, 0, self.chart.stitch)
+        self.stitch_preview.setYarn(0, 0, self.chart.yarn)
+        self.stitch_preview.refresh()
         
     def editYarnDialog(self, widget=None):
         self.builder.get_object('yarn_label').set_text(self.chart.yarn.label)
@@ -206,7 +206,9 @@ class ChartMakerGUI:
                     self.chart.yarn.label = lbl
                     break
             
-            self.chart.refresh() # refresh chart with new colors
+            # refresh chart and preview with new colors
+            self.chart.refresh() 
+            self.refreshStitchPreview()
             
         if response in [gtk.RESPONSE_OK, gtk.RESPONSE_CANCEL]:
             widget.hide()
@@ -276,7 +278,7 @@ class ChartMakerGUI:
         
         self.stopBusy()
     
-            
+    
     def openDialog(self, widget):
         f = gtk.FileChooserDialog('Open...', self.builder.get_object('main_window'), gtk.FILE_CHOOSER_ACTION_OPEN, \
                                 (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
