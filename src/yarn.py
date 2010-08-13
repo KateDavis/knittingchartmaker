@@ -10,6 +10,7 @@ class Yarn:
         logging.debug("new yarn with label \"%s\" and col %s" % (label, col))
         self.label = label
         self.col = None
+
         self.gtkcol = None
         self.selectioncol = None
         self.setCol(col) 
@@ -47,3 +48,6 @@ class Yarn:
     
         logging.debug("set yarn \"%s\" selection col using %s to %s " % (self.label, gtkcol.to_string(), col.to_string()))
         self.selectioncol = col
+    
+    def __str__(self):
+        return self.name
