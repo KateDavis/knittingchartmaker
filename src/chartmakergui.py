@@ -21,7 +21,7 @@ class ChartMakerGUI:
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.builderfile)
         
-        self.builder.get_object('main_window').connect('destroy', self.closedown)
+        self.builder.get_object('main_window').connect('delete_event', self.closedown)
         
         signals = {
             'on_new1_activate'                   : self.newChartDialog,
@@ -109,8 +109,12 @@ class ChartMakerGUI:
         self.builder.get_object('main_window').show_all()
         gtk.main()
     
-    def closedown(self, widget):
-        gtk.main_quit()
+    def closedown(self, widget, event):
+        if self.getUserConfirmation("Close?\nChanges maded to current Chart will be lost.", True):
+            widget.destroy()
+            gtk.main_quit()
+        else:
+            return True
         
     def setTitle(self):
         w = self.builder.get_object('main_window')
@@ -244,9 +248,10 @@ class ChartMakerGUI:
         self.stopBusy()
         
     def newChartDialog(self, widget):
-        self.builder.get_object('newchart_width_entry').set_value(20)
-        self.builder.get_object('newchart_height_entry').set_value(20)
-        self.builder.get_object('newchart_dialog').show_all()
+        if self.getUserConfirmation("Create new Chart?\nChanges maded to current Chart will be lost.", True):
+            self.builder.get_object('newchart_width_entry').set_value(20)
+            self.builder.get_object('newchart_height_entry').set_value(20)
+            self.builder.get_object('newchart_dialog').show_all()
     
     def newChartResponse(self, widget, response):
         self.startBusy()
@@ -299,16 +304,16 @@ class ChartMakerGUI:
         
         self.stopBusy()
     
-    
     def openDialog(self, widget):
-        f = gtk.FileChooserDialog('Open...', self.builder.get_object('main_window'), gtk.FILE_CHOOSER_ACTION_OPEN, \
-                                (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
-        filt = gtk.FileFilter()
-        filt.add_pattern("*.cm")
-        filt.set_name("ChartMaker files (*.cm)")
-        f.add_filter(filt)
-        f.connect('response', self.openResponse)
-        f.run()
+        if self.getUserConfirmation("Open new Chart?\nChanges maded to current Chart will be lost.", True):
+            f = gtk.FileChooserDialog('Open...', self.builder.get_object('main_window'), gtk.FILE_CHOOSER_ACTION_OPEN, \
+                                    (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
+            filt = gtk.FileFilter()
+            filt.add_pattern("*.cm")
+            filt.set_name("ChartMaker files (*.cm)")
+            f.add_filter(filt)
+            f.connect('response', self.openResponse)
+            f.run()
     
     def openResponse(self, widget, response):
         if response == gtk.RESPONSE_OK:
@@ -320,6 +325,7 @@ class ChartMakerGUI:
     
     def openFile(self, filename):
         self.startBusy()
+        
         self.savefile = filename
         
         self.chart.fromKnitML(self.savefile)
@@ -433,6 +439,21 @@ class ChartMakerGUI:
     # any time chart is clicked, data may have been dirtied, set title
     def chartChanged(self, chart):
         self.setTitle()
+    
+    def getUserConfirmation(self, msg=None, dirty_check=False):
+        if dirty_check and not self.chart.dirty and not self.dirty:
+            return True
+        
+        if msg is None:
+            msg = "Are you sure?"
+        d = gtk.MessageDialog(type=gtk.MESSAGE_QUESTION, buttons=gtk.BUTTONS_YES_NO, message_format=msg)
+        d.show_all()
+        response = d.run()
+        d.destroy()
+        if response == gtk.RESPONSE_YES:
+            return True
+        else:
+            return False
         
         
 if __name__ == "__main__":
