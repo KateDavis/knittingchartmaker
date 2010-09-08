@@ -1,11 +1,10 @@
 
-import gtk
-import sys
-from xml.dom import minidom
-
 import chart
+import gtk
 import stitch
+import sys
 import yarn
+
 
 class ChartMakerGUI:
     def __init__(self, filename=None):
@@ -20,25 +19,21 @@ class ChartMakerGUI:
         self.builderfile = 'glade/chartmakergui.xml'
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.builderfile)
+        self.widgets = {}
         
-        self.builder.get_object('main_window').connect('delete_event', self.closedown)
-        
+        # setup signals
         signals = {
+            'on_main_window_delete_event'        : self.closedown,
             'on_new1_activate'                   : self.newChartDialog,
-            'on_newchart_dialog_response'        : self.newChartResponse,
             'on_open1_activate'                  : self.openDialog,
             'on_save1_activate'                  : self.save,
             'on_save_as1_activate'               : self.saveAsDialog,
             'on_export1_activate'                : self.exportDialog,
-            'on_export_dialog_response'          : self.exportResponse,
             'on_resize1_activate'                : self.resizeDialog,
-            'on_resize_dialog_response'          : self.resizeResponse,
             'on_preferences1_activate'           : self.preferencesDialog,
-            'on_preferences_dialog_response'     : self.preferencesResponse,
             'on_about1_activate'                 : self.about,
             'on_yarn_combobox_changed'           : self.switchYarn,
             'on_edit_yarn_button_clicked'        : self.editYarnDialog,
-            'on_yarn_dialog_response'            : self.editYarnResponse,
             'on_stitch_combobox_changed'         : self.switchStitch,
             'on_stitch_ratio_entry_changed'      : self.setStitchRatio,
             'on_zoom_scale_value_changed'        : self.setZoom,
@@ -46,12 +41,9 @@ class ChartMakerGUI:
         }
         self.builder.connect_signals(signals)
         
-        # disable non-functioning components
-        self.builder.get_object('preferences1').set_sensitive(False)
-        
         # setup chart
         self.chart = chart.DrawableChart(20, 20, yarn.Yarn("Background Colour", "#FFFFFF"))
-        self.builder.get_object('chart_area').add(self.chart.drawing_area())
+        self.get_widget('chart_area').add(self.chart.drawing_area())
         self.chart.refresh()
         
         # add handlers for chart
@@ -59,29 +51,28 @@ class ChartMakerGUI:
         
         # setup preview (as single cell chart)
         self.stitch_preview = chart.DrawableChart(1, 1, self.chart.yarn, readOnly=True)
-        self.builder.get_object('preview_box').add(self.stitch_preview.drawing_area())
+        self.get_widget('preview_box').add(self.stitch_preview.drawing_area())
         self.stitch_preview.refresh()
         
         # set zoom scale (can be on option at some point)
-        zoom_adjustment = self.builder.get_object('zoom_scale').get_adjustment()
+        zoom_adjustment = self.get_widget('zoom_scale').get_adjustment()
         zoom_adjustment.lower = 10
         zoom_adjustment.upper = 40
         
         # set ratio
-        self.builder.get_object('stitch_ratio_entry').set_value(self.chart.h / self.chart.w)
+        self.get_widget('stitch_ratio_entry').set_value(self.chart.h / self.chart.w)
         
-        # setup dialogs
-        self.builder.get_object('newchart_dialog').set_deletable(False)
-        self.builder.get_object('yarn_dialog').set_deletable(False)
-        self.builder.get_object('preferences_dialog').set_deletable(False)
-        self.builder.get_object('resize_dialog').set_deletable(False)
-        self.builder.get_object('export_dialog').set_deletable(False)
+        # set up some file filters
+        self.file_filters = {}
+        self.file_filters['svg'] = gtk.FileFilter()
+        self.file_filters['svg'].add_pattern("*.svg")
+        self.file_filters['svg'].set_name("SVG files (*.svg)")
+        self.file_filters['cm'] = gtk.FileFilter()
+        self.file_filters['cm'].add_pattern("*.cm")
+        self.file_filters['cm'].set_name("ChartMaker files (*.cm)")
         
-        filt = gtk.FileFilter()
-        filt.add_pattern("*.svg")
-        filt.set_name("SVG files (*.svg)")
-        self.builder.get_object('export_filechooser').add_filter(filt)
-        
+        # set filter on export
+        self.get_widget('export_filechooser').add_filter(self.file_filters['svg'])
         
         # openDialog file is present
         if self.savefile is not None:
@@ -106,8 +97,15 @@ class ChartMakerGUI:
         self.setTitle()
         
         # show the gui and start it all
-        self.builder.get_object('main_window').show_all()
+        self.get_widget('main_window').show_all()
         gtk.main()
+    
+    def get_widget(self, widget):
+        if not self.widgets.has_key(widget):
+            builder_widget = self.builder.get_object(widget)
+            if builder_widget:
+                self.widgets[widget] = builder_widget
+        return self.widgets[widget]
     
     def closedown(self, widget, event):
         if self.getUserConfirmation("Close?\nChanges maded to current Chart will be lost.", True):
@@ -117,7 +115,7 @@ class ChartMakerGUI:
             return True
         
     def setTitle(self):
-        w = self.builder.get_object('main_window')
+        w = self.get_widget('main_window')
         title = self.title + ' v' + self.version
         if self.savefile is not None:
             title += ': ' + self.savefile.split('/')[-1]
@@ -135,7 +133,7 @@ class ChartMakerGUI:
         
     def setYarnList(self):
         # get combo box and clear it
-        yarnsbox = self.builder.get_object('yarn_combobox')
+        yarnsbox = self.get_widget('yarn_combobox')
         yarnsbox.set_model(None)
         yarnsbox.clear()
         
@@ -171,7 +169,7 @@ class ChartMakerGUI:
         
     def setStitchList(self):
         # get combo box and clear it
-        stitchesbox = self.builder.get_object('stitch_combobox')
+        stitchesbox = self.get_widget('stitch_combobox')
         stitchesbox.set_model(None)
         stitchesbox.clear()
         
@@ -205,17 +203,18 @@ class ChartMakerGUI:
         self.stitch_preview.refresh()
         
     def editYarnDialog(self, widget=None):
-        self.builder.get_object('yarn_label').set_text(self.chart.yarn.label)
-        self.builder.get_object('yarn_col').set_current_color(self.chart.yarn.gtkcol)
-        self.builder.get_object('yarn_dialog').show_all()
-    
-    def editYarnResponse(self, widget, response):
+        self.get_widget('yarn_label').set_text(self.chart.yarn.label)
+        self.get_widget('yarn_col').set_current_color(self.chart.yarn.gtkcol)
+        
+        widget = self.get_widget('yarn_dialog')
         self.startBusy()
+        widget.show_all()
+        response = widget.run()
         if response in [gtk.RESPONSE_OK, gtk.RESPONSE_APPLY]:
-            lbl = self.builder.get_object('yarn_label').get_text()
-            self.chart.yarn.setGtkCol(self.builder.get_object('yarn_col').get_current_color())
+            lbl = self.get_widget('yarn_label').get_text()
+            self.chart.yarn.setGtkCol(self.get_widget('yarn_col').get_current_color())
             
-            model = self.builder.get_object('yarn_combobox').get_model()
+            model = self.get_widget('yarn_combobox').get_model()
             for r in model:
                 if r[0] == self.chart.yarn.label:
                     r[0] = lbl
@@ -234,12 +233,16 @@ class ChartMakerGUI:
             
     def preferencesDialog(self, widget):
         # TODO: set current vals
-        self.builder.get_object('preferences_dialog').show_all()
-        
-    def preferencesResponse(self, widget, response):
+        widget = self.get_widget('preferences_dialog')
+        widget.show_all()
         self.startBusy()
+        response = widget.run()
         if response in [gtk.RESPONSE_OK, gtk.RESPONSE_APPLY]:
-            # TODO: set new values
+            new_grid_col = self.get_widget('chart_grid_col_entry').get_text()
+            if new_grid_col:
+                self.chart.setGridColour(new_grid_col)
+            
+            # TODO: set all values
             pass
         
         if response in [gtk.RESPONSE_OK, gtk.RESPONSE_CANCEL]:
@@ -249,35 +252,35 @@ class ChartMakerGUI:
         
     def newChartDialog(self, widget):
         if self.getUserConfirmation("Create new Chart?\nChanges maded to current Chart will be lost.", True):
-            self.builder.get_object('newchart_width_entry').set_value(20)
-            self.builder.get_object('newchart_height_entry').set_value(20)
-            self.builder.get_object('newchart_dialog').show_all()
-    
-    def newChartResponse(self, widget, response):
-        self.startBusy()
-        if response == gtk.RESPONSE_OK:
-            w = int(self.builder.get_object('newchart_width_entry').get_value())
-            h = int(self.builder.get_object('newchart_height_entry').get_value())
+            self.get_widget('newchart_width_entry').set_value(20)
+            self.get_widget('newchart_height_entry').set_value(20)
             
-            # create a new chart and add it to screen (removing old one)
-            screen = self.builder.get_object('chart_area')
-            screen.remove(self.chart.drawing_area())
-            self.chart = chart.DrawableChart(w, h)
-            screen.add(self.chart.drawing_area())
-            screen.show_all()
+            self.startBusy()
+            widget = self.get_widget('newchart_dialog')
+            widget.show_all()
+            response = widget.run()
+            if response == gtk.RESPONSE_OK:
+                w = int(self.get_widget('newchart_width_entry').get_value())
+                h = int(self.get_widget('newchart_height_entry').get_value())
+                
+                # create a new chart and add it to screen (removing old one)
+                screen = self.get_widget('chart_area')
+                screen.remove(self.chart.drawing_area())
+                self.chart = chart.DrawableChart(w, h)
+                screen.add(self.chart.drawing_area())
+                screen.show_all()
+                
+                # reset options then redraw all
+                self.savefile = None
+                self.refreshStitchPreview()
+                self.drawChart()
+                self.dirty = False
+                self.chart.dirty = False
+                self.setTitle()
             
-            # reset options then redraw all
-            self.savefile = None
-            self.refreshStitchPreview()
-            self.drawChart()
-            self.dirty = False
-            self.chart.dirty = False
-            self.setTitle()
-        
-        if widget is not None:
             widget.hide()
-        
-        self.stopBusy()
+            
+            self.stopBusy()
     
     def drawChart(self):
         self.startBusy()
@@ -285,17 +288,18 @@ class ChartMakerGUI:
         self.stopBusy()
         
     def resizeDialog(self, widget):
-        self.builder.get_object('resize_width_entry').set_value(self.chart.w)
-        self.builder.get_object('resize_height_entry').set_value(self.chart.h)
-        self.builder.get_object('resize_from_combo').set_active(0)
-        self.builder.get_object('resize_dialog').show_all()    
-    
-    def resizeResponse(self, widget, response):
+        self.get_widget('resize_width_entry').set_value(self.chart.w)
+        self.get_widget('resize_height_entry').set_value(self.chart.h)
+        self.get_widget('resize_from_combo').set_active(0)
+        
+        widget = self.get_widget('resize_dialog')
         self.startBusy()
+        widget.show_all()
+        response = widget.run()
         if response in [gtk.RESPONSE_OK, gtk.RESPONSE_APPLY]:
-            w = int(self.builder.get_object('resize_width_entry').get_value())
-            h = int(self.builder.get_object('resize_height_entry').get_value())
-            f = int(self.builder.get_object('resize_from_combo').get_active())
+            w = int(self.get_widget('resize_width_entry').get_value())
+            h = int(self.get_widget('resize_height_entry').get_value())
+            f = int(self.get_widget('resize_from_combo').get_active())
             self.chart.resize(w, h, f)
             self.drawChart()
         
@@ -306,22 +310,19 @@ class ChartMakerGUI:
     
     def openDialog(self, widget):
         if self.getUserConfirmation("Open new Chart?\nChanges maded to current Chart will be lost.", True):
-            f = gtk.FileChooserDialog('Open...', self.builder.get_object('main_window'), gtk.FILE_CHOOSER_ACTION_OPEN, \
+            f = gtk.FileChooserDialog('Open...', self.get_widget('main_window'), gtk.FILE_CHOOSER_ACTION_OPEN, \
                                     (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
-            filt = gtk.FileFilter()
-            filt.add_pattern("*.cm")
-            filt.set_name("ChartMaker files (*.cm)")
-            f.add_filter(filt)
-            f.connect('response', self.openResponse)
-            f.run()
-    
-    def openResponse(self, widget, response):
-        if response == gtk.RESPONSE_OK:
-            name = widget.get_filename()
-            if name is not None:
-                self.openFile(name)
+            
+            # add filter of .cm files
+            f.add_filter(self.file_filters['cm'])
+            
+            response = f.run()
+            if response == gtk.RESPONSE_OK:
+                name = f.get_filename()
+                if name is not None:
+                    self.openFile(name)
                 
-        widget.destroy()
+            f.destroy()
     
     def openFile(self, filename):
         self.startBusy()
@@ -346,23 +347,19 @@ class ChartMakerGUI:
             self.saveFile()
             
     def saveAsDialog(self, widget):
-        f = gtk.FileChooserDialog('Save as...', self.builder.get_object('main_window'), gtk.FILE_CHOOSER_ACTION_SAVE, \
+        f = gtk.FileChooserDialog('Save as...', self.get_widget('main_window'), gtk.FILE_CHOOSER_ACTION_SAVE, \
                                 (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
         
-        filt = gtk.FileFilter()
-        filt.add_pattern("*.cm")
-        filt.set_name("ChartMaker files (*.cm)")
-        f.add_filter(filt)
-        f.connect('response', self.saveAsResponse)
-        f.run()
+        # add filter of .cm files
+        f.add_filter(self.file_filters['cm'])
         
-    def saveAsResponse(self, widget, response):
+        response = f.run()
         if response == gtk.RESPONSE_OK:
-            self.savefile = widget.get_filename()
+            self.savefile = f.get_filename()
             # HACKY, need better way to save with extension
             if self.savefile.find(".cm") == -1:
                 self.savefile += ".cm"
-        widget.destroy()
+        f.destroy()
         self.setTitle()
         self.saveFile()
         
@@ -385,45 +382,43 @@ class ChartMakerGUI:
         
         if self.savefile is not None:
             # TODO: set current vals
-            self.builder.get_object('export_dialog').show_all()
-        
-    def exportResponse(self, widget, response):
-        self.startBusy()
-        if response == gtk.RESPONSE_OK:
+            widget = self.get_widget('export_dialog')
             self.startBusy()
-            
-            exportname = self.builder.get_object('export_filechooser').get_filename()
-            if exportname.find(".svg") == -1:
-                exportname += ".svg"
-            
-            numbers = ""
-            if self.builder.get_object('column_numbers_check').get_active():
-                numbers += "b"
+            widget.show_all()
+            response = widget.run()
+            if response == gtk.RESPONSE_OK:
+                exportname = self.get_widget('export_filechooser').get_filename()
+                if exportname.find(".svg") == -1:
+                    exportname += ".svg"
                 
-            # 0 = None, 1 = Left, 2 = Right, 3 = LR, 4 = RL
-            a = self.builder.get_object('row_numbers_combo').get_active()
-            if a == 1:
-                numbers += "l"
-            elif a == 2:
-                numbers += "r"
-            elif a == 3:
-                numbers += "lr"
-            elif a == 4:
-                numbers += "rl"
+                numbers = ""
+                if self.get_widget('column_numbers_check').get_active():
+                    numbers += "b"
+                    
+                # 0 = None, 1 = Left, 2 = Right, 3 = LR, 4 = RL
+                a = self.get_widget('row_numbers_combo').get_active()
+                if a == 1:
+                    numbers += "l"
+                elif a == 2:
+                    numbers += "r"
+                elif a == 3:
+                    numbers += "lr"
+                elif a == 4:
+                    numbers += "rl"
+                    
+                self.chart.toSVG(exportname, self.savefile, numbers, self.img_sqw, self.img_sqh)
+                self.stopBusy()
+            
+            widget.hide()
                 
-            self.chart.toSVG(exportname, self.savefile, numbers, self.img_sqw, self.img_sqh)
             self.stopBusy()
-        
-        widget.hide()
-            
-        self.stopBusy()
         
             
     def startBusy(self):
-        self.builder.get_object('main_window').window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+        self.get_widget('main_window').window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
     
     def stopBusy(self):
-        self.builder.get_object('main_window').window.set_cursor(gtk.gdk.Cursor(gtk.gdk.LEFT_PTR))
+        self.get_widget('main_window').window.set_cursor(gtk.gdk.Cursor(gtk.gdk.LEFT_PTR))
         
     def about(self, widget):
         d = gtk.AboutDialog()
