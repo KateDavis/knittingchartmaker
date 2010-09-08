@@ -173,14 +173,14 @@
 				<xsl:when test="$st = 'k3tog'">
 					<path d="M{$sqw - 10},10 L10,{$sqh - 10} M{$sqw div 2},{$sqh - 10} L{$sqw div 2},{$sqh div 2} {$sqw - 10},{$sqh - 10}" fill="none" stroke="#000000" stroke-width="1"/>
 				</xsl:when>
-				<xsl:when test="$st = 'slip'">
+				<xsl:when test="$st = 'sl1'">
 					<path d="M{$sqw div 2},10 L{$sqw div 2},{$sqh - 10}" fill="none" stroke="#000000" stroke-width="1"/>
 				</xsl:when>
 				<xsl:when test="$st = 'yo'">
-					<circle cx="{$sqw div 2}" cy="{$sqh div 2}" r="{$sqh div 3}" fill="none" stroke="#000000" stroke-width="1"/>
+					<circle cx="{$sqw div 2}" cy="{$sqh div 2}" r="{$sqh div 4}" fill="none" stroke="#000000" stroke-width="1"/>
 				</xsl:when>
 				<xsl:when test="$st = 'm1'">
-					<path d="M10,{$sqh - 10} L10,10 {$sqqw div 2},{$sqh div 2} {$sqw -10},10 {$sqw -10},{$sqh - 10}" fill="none" stroke="#000000" stroke-width="1"/>
+					<path d="M10,{$sqh - 10} L10,10 {$sqw div 2},{$sqh div 2} {$sqw -10},10 {$sqw -10},{$sqh - 10}" fill="none" stroke="#000000" stroke-width="1"/>
 				</xsl:when>
 				<xsl:when test="$st = 'ssk'">
 					<path d="M10,10 L{$sqw -10},{$sqh - 10} M{$sqw div 2},{$sqh div 2} L10,{$sqh - 10}" fill="none" stroke="#000000" stroke-width="1"/>
