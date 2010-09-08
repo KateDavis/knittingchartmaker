@@ -2,8 +2,8 @@
 import sys
 from xml.dom import minidom
 
-# python-libxslt1 pkg
 import gtk
+import gtk.gdk
 import gobject
 import libxml2
 import libxslt
@@ -249,7 +249,24 @@ class DrawableChart(Chart, gobject.GObject):
         
         # select vars to allow selection of multiple cells
         self.selectionRange = [self.w + 1, self.h + 1, -1, -1]
-
+        
+        # setup colours list
+        self.colours = {
+            "grid": None
+        }
+    
+    # adjust the colour of the grid lines
+    def setGridColour(self, colour=None):
+        if colour:
+            gtkcol = gtk.gdk.color_parse(colour)
+            if gtkcol:
+                self.colours["grid"] = gtkcol
+        else:
+            self.colours["grid"] = self.da.get_style().black_gc
+    
+    # get the colour of the grid lines
+    def getGridColour(self):
+        return self.colours["grid"]
     
     # configure the drawing area, i.e. set up a backing pixmap
     def configure_event(self, widget, event):
@@ -319,6 +336,12 @@ class DrawableChart(Chart, gobject.GObject):
         return True
         
     def refresh(self):
+        # make sure we have a grid colour
+        grid_col = self.getGridColour()
+        if not grid_col:
+            self.setGridColour()
+            grid_col = self.getGridColour()
+            
         # reset size
         self.da.set_size_request(self.tw, self.th)
         
@@ -330,14 +353,14 @@ class DrawableChart(Chart, gobject.GObject):
         
         # add vertical lines
         for i in range(0, self.tw, self.stw + 1):
-            self.da.window.draw_line(self.da.get_style().black_gc, i, 0, i, self.th)
+            self.da.window.draw_line(grid_col, i, 0, i, self.th)
         
         # add horizontal lines
         for i in range(0, self.th, self.sth + 1):
-            self.da.window.draw_line(self.da.get_style().black_gc, 0, i, self.tw, i)
+            self.da.window.draw_line(grid_col, 0, i, self.tw, i)
         
         # draw a border
-        self.da.window.draw_rectangle(self.da.get_style().black_gc, False, 0, 0, self.tw, self.th)
+        self.da.window.draw_rectangle(grid_col, False, 0, 0, self.tw, self.th)
         
         # redraw the whole thing
         self.da.queue_draw()
