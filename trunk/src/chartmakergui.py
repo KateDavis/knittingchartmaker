@@ -9,7 +9,7 @@ import yarn
 class ChartMakerGUI:
     def __init__(self, filename=None):
         self.title = 'ChartMaker'
-        self.version = '0.4'
+        self.version = '0.5'
         self.website = "http://code.google.com/p/knittingchartmaker/"
         self.authors = ["Iain Kelly", "Joeli Kelly"]
         self.description = "A program for designing knitting charts."
