@@ -1,16 +1,14 @@
 #labels Featured,Phase-Deploy
-#How to install
+=Windows=
 
-= Windows =
+==Pre-Requisites==
 
-== Pre-Requisites ==
+  # Install Python http://www.python.org/download/
+  # Install libxslt http://users.skynet.be/sbi/libxml-python/
+  # Install GTK (all-in-one bundle) http://www.gtk.org/download-windows.html#StableRelease 
+  # Install PyGTK
+  # Download latest release
 
-# Install Python http://www.python.org/download/
-# Install libxslt http://users.skynet.be/sbi/libxml-python/
-# Install GTK (all-in-one bundle) http://www.gtk.org/download-windows.html#StableRelease 
-# Install PyGTK
-# Download latest release
+==Running==
 
-== Running ==
-
-To run simply double-click ChartMaker.bat
+To run simply double-click ChartMaker`.`bat
