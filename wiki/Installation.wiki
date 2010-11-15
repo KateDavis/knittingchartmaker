@@ -4,11 +4,11 @@
 ==Pre-Requisites==
 
   # Install Python http://www.python.org/download/
+    * After installing add installation folder to PATH http://swaroopch.com/notes/Python_en:Installation#DOS_Prompt
   # Install libxslt http://users.skynet.be/sbi/libxml-python/
-  # Install GTK (all-in-one bundle) http://www.gtk.org/download-windows.html#StableRelease 
-  # Install PyGTK
-  # Download latest release
+  # Install PyGTK (and it's dependencies, e.g. GTK) http://faq.pygtk.org/index.py?file=faq21.002.htp&req=show and http://www.pygtk.org/downloads.html
+  # Download knittingchartmaker
 
 ==Running==
 
-To run simply double-click ChartMaker`.`bat
+To run simply double-click 'ChartMaker.bat'
