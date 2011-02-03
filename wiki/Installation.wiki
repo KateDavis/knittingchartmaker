@@ -1,17 +1,2 @@
 #labels Featured,Phase-Deploy
-=Windows=
-
-==Pre-Requisites==
-  # Install GTK http://www.gtk.org/download-windows.html
-    * Extract zip to C:\GTK then add C:\GTK\lib and C:\GTK\bin to PATH
-  # Install Python http://www.python.org/download/
-    * After installing add installation folder to PATH http://swaroopch.com/notes/Python_en:Installation#DOS_Prompt
-  # Install libxslt http://users.skynet.be/sbi/libxml-python/
-  # Install Gobject http://ftp.gnome.org/pub/GNOME/binaries/win32/pygobject/
-  # Install PyCairo http://ftp.gnome.org/pub/GNOME/binaries/win32/pycairo/
-  # Install PyGTK http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/
-  # Download knittingchartmaker
-
-==Running==
-
-To run simply double-click 'ChartMaker.bat'
+TODO
