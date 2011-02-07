@@ -115,7 +115,7 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
                 add_new_yarn = true;
             }
 
-            var new_yarn = self._chart_grid.current_yarn(yarn_name, (add_new_yarn ? "#FF0000" : null));
+            var new_yarn = self._chart_grid.current_yarn(yarn_name, (add_new_yarn ? "FF0000" : null));
 
             /* set colour for user to change */
             yarn_colour.value = yarn_colour.style.background = new_yarn.colour(); 
@@ -130,7 +130,7 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
         };
 
         var yarn_colour = document.createElement("input");
-        yarn_colour.onkeyup = function(event) {
+        yarn_colour.onchange = function(event) {
             var yarn_option = yarn_choice.options[yarn_choice.selectedIndex];
             var yarn_name = yarn_option.value;
             var selected_yarn = self._chart_grid.current_yarn(yarn_name);
@@ -144,6 +144,7 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
             selected_yarn.colour(new_colour);
             self.draw();
         };
+        yarn_colour.className = "color"; /* set class to use jscolor for nice color chooser */
 
         var label_yarn_choice = document.createElement("label");
         label_yarn_choice.appendChild(document.createTextNode("Yarn: "));

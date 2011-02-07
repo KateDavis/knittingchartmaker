@@ -14,7 +14,6 @@ kcm.ChartGrid = function(canvas_id, cols, rows) {
     this._yarns = {};
     this._yarns[this._yarn.name()] = this._current_yarn;
     this._yarn_count = 1;
-    this._selection = {};
 
     /* add cell draw handler */
     this._cell_draw_handler = function(context, c, r, x, y, w, h) {
@@ -29,56 +28,24 @@ kcm.ChartGrid = function(canvas_id, cols, rows) {
     this._cell_click_handler = function(c, r, double_click) {
         var original_stitch = this.stitch(c, r);
 
-        var new_stitch;
+        var new_stitch = this._current_stitch;
+        var new_yarn   = this._current_yarn;
         if (double_click) {
-            new_stitch = new kcm[this._default_stitch](this._default_yarn, this._current_stitch_width);
-        } else {
-            new_stitch = new kcm[this._current_stitch](this._current_yarn, this._current_stitch_width);
+            new_stitch = this._default_stitch;
+            new_yarn   = this._default_yarn;
         }
+        var stitch = new kcm[new_stitch](new_yarn, this._current_stitch_width);
 
         /* check that new stitch fits */
-        if (c + new_stitch.cols() > this.cols()) {
+        if (c + stitch.cols() > this.cols()) {
             return;
         }
 
-        /* don't do multi-stitch selection filling just yet */
-        if (this._selection[c+","+r] && new_stitch.cols() > 1 ){
-            return;
-        }
-
-        if (this._selection[c+","+r]) {
-            for (var pos in this._selection) {
-                pos = pos.split(',');
-                this.stitch(pos[0], pos[1], new_stitch);
-            }
-        } else{
-            this.stitch(c, r, new_stitch);
-        }
+        this.stitch(c, r, stitch);
         this.draw();
     };
     this.handler('cell_click', this._cell_click_handler);
-
-    /* add handler to capture selections */
-    this._cell_selected_handler = function(c, r) {
-        if (!this._selection[c+","+r]) {
-            console.log('selecting '+c+','+r);
-            var stitch = this.stitch(c, r);
-            stitch.selected(true);
-            this._selection[c+","+r] = stitch;
-            this.draw();
-        }
-    };
-    this.handler('cell_selected', this._cell_selected_handler);
-    this._cell_unselected_handler = function(c, r) {
-        if (this._selection[c+","+r]) {
-            console.log('unselecting '+c+','+r);
-            var stitch = this.stitch(c, r);
-            stitch.selected(false);
-            delete this._selection[c+","+r];
-            this.draw();
-        }
-    };
-    this.handler('cell_unselected', this._cell_unselected_handler);
+    this.handler('cell_selected_click', this._cell_click_handler);
 
     this.current_stitch = function(new_stitch) {
         if (new_stitch) {

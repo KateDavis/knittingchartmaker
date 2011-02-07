@@ -13,12 +13,15 @@ kcm.Grid = function(canvas_id, cols, rows) {
     this._total_height = 0;
     this._colours = {
         background: "#FFFFFF",
-        grid: "#000000"
+        grid: "#000000",
+        selected: "#333333"
     };
     this._handlers = {
         cell_click: null,
         cell_selected: null,
-        cell_unselected: null
+        cell_mouse_down: null,
+        cell_unselected: null,
+        cell_click_selected: null
     };
     this._numbers = {
         "left": false
@@ -65,28 +68,40 @@ kcm.Grid = function(canvas_id, cols, rows) {
             return;
         }
 
-        if (this._handlers['cell_click']) {
-            this._handlers['cell_click'].fn.call(
-                this._handlers["cell_click"].ctxt,
-                grid_pos.col, grid_pos.row,
-                double_click
-            );
-        }
-        
-        /* unselect everything and run the handlers */ 
-        if (!this._selected[pos[0]+','+pos[1]]) {
-            if (this._handlers['cell_unselected']) {
+        if (this._selected[grid_pos.col+','+grid_pos.row]) {
+            /* if in selection, trigger clicks on all cells in selection */
+            if (this._handlers['cell_click']) {
                 for (var pos in this._selected) {
                     pos = pos.split(',');
-                    this._handlers['cell_unselected'].fn.call(
-                        this._handlers["cell_unselected"].ctxt,
-                        pos[0], pos[1]
+                    this._handlers['cell_click'].fn.call(
+                        this._handlers["cell_click"].ctxt,
+                        parseInt(pos[0]), parseInt(pos[1]),
+                        double_click
                     );
                 }
             }
-            this._selected = {};
+        } else {
+            if (this._handlers['cell_click']) {
+                this._handlers['cell_click'].fn.call(
+                    this._handlers["cell_click"].ctxt,
+                    grid_pos.col, grid_pos.row,
+                    double_click
+                );
+            }
         }
 
+        /* unselect everything and run the handlers */ 
+        if (this._handlers["cell_unselected"]){
+            for (var pos in this._selected) {
+                pos = pos.split(',');
+                this._handlers['cell_unselected'].fn.call(
+                    this._handlers["cell_unselected"].ctxt,
+                    parseInt(pos[0]), parseInt(pos[1])
+                );
+            }
+        }
+        this._selected = {};
+        this.draw();
     };
     this._mouse_down_handler = function(event) {
         var pos = this._relative_position(event);
@@ -96,13 +111,7 @@ kcm.Grid = function(canvas_id, cols, rows) {
         if (event.ctrlKey) {
             this._dragging = true;
             this._selected[grid_pos.col+','+grid_pos.row] = 1;
-
-            if (this._handlers['cell_selected']) {
-                this._handlers['cell_selected'].fn.call(
-                    this._handlers["cell_selected"].ctxt,
-                    grid_pos.col, grid_pos.row
-                );
-            }
+            this.draw();
         }
     };
     this._mouse_move_handler = function(event) {
@@ -114,13 +123,7 @@ kcm.Grid = function(canvas_id, cols, rows) {
                 return;
             }
             this._selected[grid_pos.col+','+grid_pos.row] = 1;
-
-            if (this._handlers['cell_selected']) {
-                this._handlers['cell_selected'].fn.call(
-                    this._handlers["cell_selected"].ctxt,
-                    grid_pos.col, grid_pos.row
-                );
-            }
+            this.draw();
         }
     };
     this._mouse_up_handler = function(event) {
@@ -222,7 +225,7 @@ kcm.Grid = function(canvas_id, cols, rows) {
         // add border
         this._context.strokeStyle = this._colours.grid;
         this._context.lineWidth = 1;
-        this._context.strokeRect(0, 0, this._total_width+1, this._total_height+1);
+        //this._context.strokeRect(0, 0, this._total_width+1, this._total_height+1);
 
         // call draw handler for each cell
         if (this._handlers["cell_draw"]) {
@@ -237,6 +240,19 @@ kcm.Grid = function(canvas_id, cols, rows) {
                     );
                 }
             }
+        }
+
+        // draw any selection
+        this._context.strokeStyle = this._colours.selection;
+        this._context.lineWidth = 1;
+        for (var pos in this._selected) {
+            pos = pos.split(',');
+            this._context.strokeRect(
+                parseInt(pos[0])*(this._square_width)+1,
+                parseInt(pos[1])*(this._square_height)+1,
+                this._square_width-1,
+                this._square_height-1
+            );
         }
     };
 
