@@ -244,7 +244,7 @@ kcm.Grid = function(canvas_id, cols, rows) {
 
         // draw any selection
         this._context.strokeStyle = this._colours.selection;
-        this._context.lineWidth = 1;
+        this._context.lineWidth = 2;
         for (var pos in this._selected) {
             pos = pos.split(',');
             this._context.strokeRect(

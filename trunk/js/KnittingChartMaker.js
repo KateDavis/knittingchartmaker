@@ -1,7 +1,14 @@
 
-kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
+function $(id) {
+    return document.getElementById(id);
+}
+
+kcm.KnittingChartMaker = function(
+        canvas_id,  width_id,       height_id,  resize_id,
+        stitch_id,  stitch_size_id, yarn_id,    yarn_colour_id,
+        save_id,    load_id,        img_png_id, img_svg_id
+) {
     this._chart_grid = new kcm.ChartGrid(canvas_id, 10, 10);
-    this._chart_options = document.getElementById(chart_options_id);
 
     /* check for any URL config options */
     var vars = [];
@@ -25,39 +32,14 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
 
     /* setup chart options */
     this._setup_options = function() {
-        this._chart_options.innerHTML = "";
 
         /* chart size options */
-        var input_cols = document.createElement("input");
-        input_cols.id = "kcm_chart_cols";
-        input_cols.size = 4;
-        input_cols.value = this._chart_grid.cols();
-        var input_rows = document.createElement("input");
-        input_rows.id = "kcm_chart_rows";
-        input_rows.value = this._chart_grid.rows();
-        input_rows.size = 4;
-        var resize_button = document.createElement("button");
-        resize_button.appendChild(document.createTextNode("Resize"));
-        var label_size = document.createElement("label");
-        label_size.appendChild(document.createTextNode("Chart Size: "));
-        this._chart_options.appendChild(label_size);
-        this._chart_options.appendChild(input_cols);
-        this._chart_options.appendChild(document.createTextNode("x"));
-        this._chart_options.appendChild(input_rows);
-        this._chart_options.appendChild(resize_button);
-
-        resize_button.onclick = function(event) {
-            self._chart_grid.resize(input_cols.value, input_rows.value);
+        $(resize_id).onclick = function(event) {
+            self._chart_grid.resize($(width_id).value, $(height_id).value);
             self.draw();
         };
 
         /* stitch choice */
-        var stitch_choice = document.createElement("select");
-        stitch_choice.id = "kcm_stitch_choice";
-        var stitch_size = document.createElement("input");
-        stitch_size.id = "kcm_stitch_size";
-        stitch_size.size = 3;
-        stitch_size.disabled = true;
         var stitches = [
             "knit", "purl", "k2tog", "k3tog", "sk2p", "sl1", "yo", "m1", "ssk",
             "ck3dec", "fc", "bc"
@@ -65,35 +47,27 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
         for (var i=0; i<stitches.length; ++i) {
             var option = document.createElement("option");
             option.appendChild(document.createTextNode(stitches[i]));
-            stitch_choice.appendChild(option);
+            $(stitch_id).appendChild(option);
         }
-        stitch_choice.onchange = function(event) {
-            var new_stitch = stitch_choice.options[stitch_choice.selectedIndex].value;
+        $(stitch_id).onchange = function(event) {
+            var new_stitch = $(stitch_id).options[$(stitch_id).selectedIndex].value;
             self._chart_grid.current_stitch(new_stitch);
 
             /* check if stitch is variable */
             if ((new kcm[new_stitch]()).variable_width()) {
-                stitch_size.disabled = false;
+                $(stitch_size_id).disabled = false;
             } else {
-                stitch_size.value = '';
-                stitch_size.disabled = true;
+                $(stitch_size_id).value = '';
+                $(stitch_size_id).disabled = true;
             }
         };
-        stitch_size.onchange = function(event) {
-            var new_size = parseInt(stitch_size.value);
+        $(stitch_size_id).onchange = function(event) {
+            var new_size = parseInt($(stitch_size_id).value);
             self._chart_grid.current_stitch_width(new_size);
         };
 
-        var label_stitch_choice = document.createElement("label");
-        label_stitch_choice.appendChild(document.createTextNode("Stitch: "));
-        this._chart_options.appendChild(label_stitch_choice);
-        this._chart_options.appendChild(stitch_choice);
-        this._chart_options.appendChild(stitch_size);
-
         /* yarn choice */
         var current_yarn = this._chart_grid.current_yarn().name();
-        var yarn_choice = document.createElement("select");
-        yarn_choice.id = "kcm_yarn_choice";
         for (var yarn_name in this._chart_grid._yarns) {
             var option = document.createElement("option");
             option.appendChild(document.createTextNode(yarn_name));
@@ -101,13 +75,13 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
             if (current_yarn == yarn_name) {
                 option.selected = true;
             }
-            yarn_choice.appendChild(option);
+            $(yarn_id).appendChild(option);
         }
         var new_yarn_option = document.createElement("option");
         new_yarn_option.appendChild(document.createTextNode("-- New Yarn --"));
-        yarn_choice.appendChild(new_yarn_option);
-        yarn_choice.onchange = function(event) {
-            var yarn_name = yarn_choice.options[yarn_choice.selectedIndex].value;
+        $(yarn_id).appendChild(new_yarn_option);
+        $(yarn_id).onchange = function(event) {
+            var yarn_name = $(yarn_id).options[$(yarn_id).selectedIndex].value;
 
             var add_new_yarn = false;
             if (yarn_name == "-- New Yarn --") {
@@ -118,23 +92,22 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
             var new_yarn = self._chart_grid.current_yarn(yarn_name, (add_new_yarn ? "FF0000" : null));
 
             /* set colour for user to change */
-            yarn_colour.value = yarn_colour.style.background = new_yarn.colour(); 
+            $(yarn_colour_id).value = $(yarn_colour_id).style.background = new_yarn.colour(); 
 
             if (add_new_yarn) {
                 var option = document.createElement("option");
                 option.appendChild(document.createTextNode(yarn_name));
                 option.style.backgroundColor = new_yarn.colour();
                 option.selected = true;
-                yarn_choice.insertBefore(option, new_yarn_option);
+                $(yarn_id).insertBefore(option, new_yarn_option);
             }
         };
 
-        var yarn_colour = document.createElement("input");
-        yarn_colour.onchange = function(event) {
-            var yarn_option = yarn_choice.options[yarn_choice.selectedIndex];
+        $(yarn_colour_id).onchange = function(event) {
+            var yarn_option = $(yarn_id).options[$(yarn_id).selectedIndex];
             var yarn_name = yarn_option.value;
             var selected_yarn = self._chart_grid.current_yarn(yarn_name);
-            var new_colour = yarn_colour.value;
+            var new_colour = $(yarn_colour_id).value;
 
             /* re-colour the choices */
             yarn_option.style.background = yarn_colour.style.background = "";
@@ -144,59 +117,39 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
             selected_yarn.colour(new_colour);
             self.draw();
         };
-        yarn_colour.className = "color"; /* set class to use jscolor for nice color chooser */
+        $(yarn_colour_id).className = "color"; /* set class to use jscolor for nice color chooser */
 
-        var label_yarn_choice = document.createElement("label");
-        label_yarn_choice.appendChild(document.createTextNode("Yarn: "));
-        this._chart_options.appendChild(label_yarn_choice);
-        this._chart_options.appendChild(yarn_choice);
-        this._chart_options.appendChild(yarn_colour);
-        yarn_choice.onchange();
+        $(yarn_id).onchange();
 
         /* save button */
-        var save_button = document.createElement("button");
-        save_button.id = "kcm_chart_save";
-        save_button.appendChild(document.createTextNode("Save"));
-        save_button.onclick = function(event) {
+        $(save_id).onclick = function(event) {
             var canvas_data = self._chart_grid.data();
             window.open("data:application/json;charset=utf-8,"+encodeURI(canvas_data), "_newtab");
         };
-        this._chart_options.appendChild(save_button);
 
         /* load button */
-        var load_button = document.createElement("button");
-        load_button.id = "kcm_chart_load";
-        load_button.appendChild(document.createTextNode("Load"));
-        load_button.onclick = function(event) {
+        $(load_id).onclick = function(event) {
             var canvas_data = window.prompt("Paste previously saved data:");
             self._chart_grid.data(canvas_data);
 
             /* set select stitch and yarn */
             self._setup_options();
-            for (var i=0; i<self._stitch_choice.options.length; ++i) {
-                if (self._stitch_choice.options[i].value == self._chart_grid.current_stitch) {
-                    self._stitch_choice.options[i].select = true;
+            for (var i=0; i<$(stitch_id).options.length; ++i) {
+                if ($(stitch_id).options[i].value == self._chart_grid.current_stitch) {
+                    $(stitch_id).options[i].select = true;
                     break;
                 }
             }
         };
-        this._chart_options.appendChild(load_button);
 
         /* as image PNG */
-        var image_png_button = document.createElement("button");
-        image_png_button.id = "kcm_chart_image_png";
-        image_png_button.appendChild(document.createTextNode("Image (PNG)"));
-        image_png_button.onclick = function(event) {
+        $(img_png_id).onclick = function(event) {
             var image_data = self._chart_grid.image_data();
             window.open(image_data, "_newtab");
         };
-        this._chart_options.appendChild(image_png_button);
 
         /* as image SVG */
-        var image_svg_button = document.createElement("button");
-        image_svg_button.id = "kcm_chart_image_svg";
-        image_svg_button.appendChild(document.createTextNode("Image (SVG)"));
-        image_svg_button.onclick = function(event) {
+        $(img_svg_id).onclick = function(event) {
             var svg_xml = self._chart_grid.to_svg(
                 self._chart_grid.square_width(),
                 self._chart_grid.square_height(),
@@ -204,7 +157,6 @@ kcm.KnittingChartMaker = function(canvas_id, chart_options_id) {
             );
             window.open("data:image/svg+xml;charset=utf-8," + encodeURI(svg_xml), "_newtab");
         };
-        this._chart_options.appendChild(image_svg_button);
     };
 
     this.draw = function() {
