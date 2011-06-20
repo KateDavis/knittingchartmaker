@@ -22,8 +22,26 @@
 		<title>Knitting Chart Maker</title>
 	</head>
 	<body>
-		<!-- will be automatically populated with options -->
-		<div id="kcm_chart_options"></div>
+		<div id="kcm_chart_selects">
+			<label for="kcm_chart_width">Chart Size: </label>
+			<input type="text" size="3" id="kcm_chart_width" />
+			<span>X</span>
+			<input type="text" size="3" id="kcm_chart_height" />
+			<input type="button" id="kcm_chart_resize" value="Resize" />
+			
+			<label for="kcm_chart_stitch">Stitch: </label>
+			<select id="kcm_chart_stitch" />
+			<input type="text" size="2" id="kcm_chart_stitch_size" />
+			
+			<label for="kcm_chart_yarn">Yarn: </label>
+			<select id="kcm_chart_yarn" />
+			<input type="text" size="7" id="kcm_chart_yarn_colour" />
+			
+			<input type="button" id="kcm_chart_save" value="Save" />
+			<input type="button" id="kcm_chart_load" value="Load" />
+			<input type="button" id="kcm_chart_img_png" value="Image (PNG)" />
+			<input type="button" id="kcm_chart_img_svg" value="Image (SVG)" />
+		</div>
 		
 		<br/>
 		
